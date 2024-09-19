@@ -1,0 +1,25 @@
+module ALU (
+input [31:0] a,
+input [31:0] b,
+input [3:0] ALU_Ctrl,
+output reg [31:0] result,
+output Zero_fg);
+
+always @(*)
+begin
+	case(ALU_Ctrl)
+	4'b0010 : result = a + b;
+	4'b0110 : result = a - b;
+	4'b0000 : result = a & b;
+	4'b0001 : result = a | b;
+	4'b0111 : begin if ($signed(a) > $signed(b)) result = 32'b1;
+						 else result = 32'b0;
+				 end
+	4'b1100 : result = a ^ b;
+	default : result = 0;
+	endcase
+end 
+
+assign Zero_fg = (result == 32'b0) ? 1'b1 : 1'b0;
+
+endmodule 

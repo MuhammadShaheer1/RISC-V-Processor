@@ -1,0 +1,19 @@
+module RiscvProcessor # (parameter [31:0] INITIAL_PC = 32'h00400000)
+(
+input clk, rst,
+input [31:0] instruction,
+input [31:0] dReadData,
+output [31:0] PC,
+output [31:0] dAddress, dWriteData,
+output MemRead,
+output MemWrite
+
+);
+
+wire Zero;
+wire PcSrc, ALUSrc, RegWrite, MemtoReg;
+wire [3:0] ALUCtrl;
+
+control U1(instruction[6:0], MemRead, MemtoReg, ALUop, MemWrite, ALUSrc, RegWrite);
+
+alucontrol U2(ALUop, {instruction[30], instruction[14:12]}, ALUCtrl);
